@@ -48,12 +48,88 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
+void clearAllClock(void);
+void setNumberOnClock(int num);
+void clearNumberOnClock(int num);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+/* USER CODE END 0 */
+
+/**
+  * @brief  The application entry point.
+  * @retval int
+  */
+int main(void)
+{
+  /* USER CODE BEGIN 1 */
+
+  /* USER CODE END 1 */
+
+  /* MCU Configuration--------------------------------------------------------*/
+
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
+
+  /* USER CODE BEGIN Init */
+
+  /* USER CODE END Init */
+
+  /* Configure the system clock */
+  SystemClock_Config();
+
+  /* USER CODE BEGIN SysInit */
+
+  /* USER CODE END SysInit */
+
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  /* USER CODE BEGIN 2 */
+  /* USER CODE END 2 */
+
+  /* Infinite loop */
+  /* USER CODE BEGIN WHILE */
+  int hour = 0, minute = 0, second = 0;
+  while (1)
+  {
+    /* USER CODE END WHILE */
+	  second++;
+	  if (second >= 60)
+	     {
+	      second = 0;
+	      minute++;
+	      if (minute >= 60)
+	         {
+	          minute = 0;
+	          hour++;
+	          if (hour >= 12)
+	              {
+	               hour = 0;
+	              }
+	          }
+	      }
+	  clearAllClock();
+	  setNumberOnClock(hour % 12);   // Bật LED tương ứng với giờ (0-11)
+	  HAL_Delay(1000);               // Đợi 1 giây
+	  clearAllClock();
+	  setNumberOnClock(minute / 5);  // Bật LED tương ứng với phút (0-11)
+	  HAL_Delay(1000);               // Đợi 1 giây
+	  clearAllClock();
+	  setNumberOnClock(second / 5);  // Bật LED tương ứng với giây (0-11)
+	  HAL_Delay(1000);               // Đợi 1 giây
+    /* USER CODE BEGIN 3 */
+  }
+  /* USER CODE END 3 */
+}
+
+/**
+  * @brief System Clock Configuration
+  * @retval None
+  */
 void clearNumberOnClock ( int num ) {
 	if ( num == 0) {
 		HAL_GPIO_WritePin (led12_GPIO_Port, led12_Pin ,GPIO_PIN_SET);
@@ -63,7 +139,7 @@ void clearNumberOnClock ( int num ) {
 	}
 	if ( num == 2) {
 		HAL_GPIO_WritePin (led2_GPIO_Port, led2_Pin ,GPIO_PIN_SET);
-
+	}
 	if ( num == 3) {
 		HAL_GPIO_WritePin (led3_GPIO_Port, led3_Pin, GPIO_PIN_SET);
 	}
@@ -135,94 +211,20 @@ void setNumberOnClock (int num ) {
 }
 
 void clearAllClock () {
-	HAL_GPIO_WritePin (led1_GPIO_Port, led1_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led2_GPIO_Port, led2_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led3_GPIO_Port, led3_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led4_GPIO_Port, led4_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led5_GPIO_Port, led5_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led6_GPIO_Port, led6_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led7_GPIO_Port, led7_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led8_GPIO_Port, led8_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led9_GPIO_Port, led9_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led10_GPIO_Port, led10_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led11_GPIO_Port, led11_Pin, GPIO_PIN_RESET);
-	HAL_GPIO_WritePin (led12_GPIO_Port, led12_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin (led1_GPIO_Port, led1_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led2_GPIO_Port, led2_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led3_GPIO_Port, led3_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led4_GPIO_Port, led4_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led5_GPIO_Port, led5_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led6_GPIO_Port, led6_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led7_GPIO_Port, led7_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led8_GPIO_Port, led8_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led9_GPIO_Port, led9_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led10_GPIO_Port, led10_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led11_GPIO_Port, led11_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin (led12_GPIO_Port, led12_Pin, GPIO_PIN_SET);
 }
 
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
-int main(void)
-{
-  /* USER CODE BEGIN 1 */
-
-  /* USER CODE END 1 */
-
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
-  SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  /* USER CODE BEGIN 2 */
-  clearAllClock () ;
-  int h = 0, p = 0, s = 0;
-  /* USER CODE END 2 */
-
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  HAL_GPIO_WritePin ( led12_GPIO_Port, led12_Pin, GPIO_PIN_RESET);
-  while (1)
-  {
-	  HAL_Delay (5000) ;
-    /* USER CODE END WHILE */
-	  if ( s < 12) {
-	 		  clearNumberOnClock(s);
-	 		  setNumberOnClock(h);
-	 		  setNumberOnClock(p);
-	 		  	  s += 1;
-	 	  setNumberOnClock(s);
-	 	  }
-	 	  else {
-	 		  clearNumberOnClock(p);
-	 		  	  p += 1;
-	 		  setNumberOnClock(p);
-	 		  if(p >= 12)
-	 			  p = 0;
-	 		  clearNumberOnClock(h);
-	 		  	  h += 1;
-	 		  setNumberOnClock(h);
-	 		  if(h >= 12) {
-	 			  h = 0; p = 0 ; s = 0;
-	 		  setNumberOnClock(h);
-	 		  setNumberOnClock(p);
-	 		  setNumberOnClock(s);
-	 		  }
-	 		  }
-    /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
-}
-
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
